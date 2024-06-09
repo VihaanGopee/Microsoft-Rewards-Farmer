@@ -4,6 +4,12 @@ on:
   schedule:
     # This schedules the job to run every day at 3 PM, 4 PM, and 5 PM.
     - cron: '0 15,16,17 * * *'
+  workflow_dispatch:
+    inputs:
+      run_mode:
+        description: 'Choose run mode: scheduled or manual'
+        required: true
+        default: 'manual'
 
 jobs:
   run-script:
@@ -24,7 +30,8 @@ jobs:
     - name: Upgrade Selenium
       run: pip install selenium --upgrade
 
-    - name: Random wait time
+    - name: Conditional random wait time
+      if: ${{ github.event_name == 'schedule' }}
       # Random wait time between 0 to 7200 seconds (0 to 2 hours)
       run: sleep $(( RANDOM % 7200 ))
 
