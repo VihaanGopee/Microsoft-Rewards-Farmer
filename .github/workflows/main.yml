@@ -5,11 +5,6 @@ on:
     # This schedules the job to run every day at 3 PM, 4 PM, and 5 PM.
     - cron: '0 15,16,17 * * *'
   workflow_dispatch:
-    inputs:
-      run_mode:
-        description: 'Choose run mode: scheduled or manual'
-        required: true
-        default: 'manual'
 
 jobs:
   run-script:
@@ -23,6 +18,9 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
+
+    - name: Install setuptools
+      run: pip install setuptools
 
     - name: Install dependencies
       run: pip install -r requirements.txt
